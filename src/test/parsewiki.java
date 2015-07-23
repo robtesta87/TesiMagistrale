@@ -1,10 +1,10 @@
 package test;
-
+/*
 import edu.jhu.nlp.wikipedia.PageCallbackHandler;
 import edu.jhu.nlp.wikipedia.WikiPage;
 import edu.jhu.nlp.wikipedia.WikiXMLParser;
 import edu.jhu.nlp.wikipedia.WikiXMLParserFactory;
-
+*/
 
 
 public class parsewiki {
@@ -20,7 +20,7 @@ public class parsewiki {
 
 	        }catch(Exception e) {
 	                e.printStackTrace();
-	        }*/
+	        }
 	        
 	        WikiXMLParser wxsp = WikiXMLParserFactory.getSAXParser(args[0]);
             
@@ -35,6 +35,6 @@ public class parsewiki {
 	           wxsp.parse();
 	        }catch(Exception e) {
 	                e.printStackTrace();
-	        }
+	        }*/
 	}
 }
