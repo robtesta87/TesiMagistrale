@@ -27,7 +27,6 @@ import org.apache.lucene.store.FSDirectory;
 
 public class invertedIndexTitleMid {
 	static final String IndexPath = "util/index_lucene/";
-	static final String DictionaryPath = "util/dictionar/";
 	static final String TitleMidPath = "/media/roberto/Elements/TesiMagistrale/componenti/title_wkid_mid.txt";
 
 	public static void main(String[] args) throws IOException {
@@ -50,12 +49,12 @@ public class invertedIndexTitleMid {
 		String mid = "";
 		String line = "";
 		int i=0;
-		while(i<100){
-			line=b.readLine();
+		while((line=b.readLine())!=null){
+			//line=b.readLine();
 			fieldsText = line.split(" ");
 			title = fieldsText[0];
 			mid = fieldsText[2];
-			//System.out.println(title+" "+mid);
+			System.out.println(title+" "+mid);
 			
 			//creazione del Document con i relativi campi d'interesse
 			Document doc = new Document();
@@ -73,42 +72,18 @@ public class invertedIndexTitleMid {
 			i++;
 		}
 
-		
-		
-		
-		
-		
-		
-
 		writer.close();
-
+		b.close();
+		f.close();
 
 		System.out.println("CONCLUSA. ");
 		System.out.println("Creazione del dizionario in corso...");
 
-
-
-		createDictionary(analyzer);
 		Date end = new Date();
 		System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 		System.out.println("CONCLUSA");
 
 	}
 	
-	
-	private static void createDictionary(Analyzer analyzer) throws IOException {
-		Directory dictionaryDir = FSDirectory.open(new File(DictionaryPath)); 
-		Directory indexDir = FSDirectory.open(new File(IndexPath));
-		IndexReader reader = DirectoryReader.open(indexDir);
-		
-		Dictionary dictionary = new LuceneDictionary(reader, "content");
-		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_47, analyzer);
-		
-		//StringDistance distance = new NGramDistance(3);
-		//SpellChecker spellChecker = new SpellChecker(dictionaryDir,distance);
-		
-		SpellChecker spellChecker = new SpellChecker(dictionaryDir);
-		spellChecker.indexDictionary(dictionary, iwc, false	);
-		spellChecker.close();		
-	}
+
 }
