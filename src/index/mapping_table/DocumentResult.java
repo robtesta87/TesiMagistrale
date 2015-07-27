@@ -1,4 +1,4 @@
-package testIndex;
+package index.mapping_table;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package testIndex;
+package index.mapping_table;
 
 
 import java.io.BufferedReader;
@@ -27,7 +27,7 @@ import org.apache.lucene.store.FSDirectory;
 
 public class invertedIndexTitleMid {
 	static final String IndexPath = "util/index_lucene/";
-	static final String TitleMidPath = "/media/roberto/Elements/TesiMagistrale/componenti/title_wkid_mid.txt";
+	static final String TitleMidPath = "/home/chris88/Documenti/componenti/title_wkid_mid.txt";
 
 	public static void main(String[] args) throws IOException {
 
@@ -55,16 +55,16 @@ public class invertedIndexTitleMid {
 			title = fieldsText[0];
 			mid = fieldsText[2];
 			System.out.println(title+" "+mid);
-			
+
 			//creazione del Document con i relativi campi d'interesse
 			Document doc = new Document();
-			
+
 			Field titleField = new TextField("title", title, Field.Store.YES);
 			titleField.setBoost(2f);
-			
+
 			Field midField = new TextField("mid", mid,Field.Store.YES);
 			midField.setBoost(1.5f);
-			
+
 			doc.add(titleField);
 			doc.add(midField);
 
@@ -84,6 +84,6 @@ public class invertedIndexTitleMid {
 		System.out.println("CONCLUSA");
 
 	}
-	
+
 
 }

@@ -1,10 +1,11 @@
-package testIndex;
+package index.mapping_table;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +36,9 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
-public class Searcher {
+import bean.EntryMappedBean;
+
+public class SearcherEntryMapped {
 
 	static final String IndexPath = "util/index_lucene/";
 
@@ -47,13 +50,56 @@ public class Searcher {
 	private static IndexSearcher searcher;
 	private static QueryParser parser;
 
-	public Searcher() throws IOException {
+	public SearcherEntryMapped() throws IOException {
 		reader = DirectoryReader.open(FSDirectory.open(new File(IndexPath)));
 		searcher = new IndexSearcher(reader);
 		analyzer = new StandardAnalyzer(Version.LUCENE_47);
 	}
 
 	public static void main(String[] args) throws Exception {
+		executeQuery();
+	}
+	/*
+	private static List<DocumentResult> createDocumentsResulted(ScoreDoc[] hits, Query query) throws IOException, InvalidTokenOffsetsException {
+		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
+		Highlighter highlighter = new Highlighter(htmlFormatter,
+				new QueryScorer(query));
+		//DocumentResult[] docResArray = new DocumentResult[hits.length];
+		List<DocumentResult> docResArray = new ArrayList<DocumentResult>();
+
+		for (int i = 0; i < hits.length; i++) {
+			DocumentResult docRes = new DocumentResult();
+			int docId = hits[i].doc;
+			Document doc = searcher.doc(docId);
+			//docRes.setRelatedDocument(moreLikeThis(3, docId));
+			String url = doc.get("url");
+			if (url != null) {
+				docRes.setUrl(url);
+				String title = doc.get("title");
+				if (title != null) {
+					docRes.setTitle(title);
+				}
+
+				StringBuilder builder = new StringBuilder();
+				for (TextFragment frag : getHighlights(docId, highlighter))
+					if ((frag != null) && (frag.getScore() > 0)) {
+						String snippet = frag.toString().replaceAll("\\s+", " ");
+						builder.append(snippet).append("...");
+					}
+				if (builder.length() != 0)
+					docRes.setHighlights(builder.toString());
+
+			}
+
+			docResArray.add(docRes);
+		}
+
+		return docResArray;
+
+	}
+	 */
+
+	private static void executeQuery() throws IOException, UnsupportedEncodingException {
 		String queries = null;
 		String queryString = null;
 		int hitsPerPage = 10;
@@ -89,7 +135,7 @@ public class Searcher {
 
 				TopDocs results = searcher.search(query, 5 * hitsPerPage);
 				ScoreDoc[] hits = results.scoreDocs;
-				
+
 				/* print results */
 				//System.out.println("Found " + hits.length + " hits.");
 				for(int i=0;i<hits.length;++i) {
@@ -104,7 +150,7 @@ public class Searcher {
 				else
 					System.out.println(hits.length + " results found for:\t"
 							+ readableQuery);
-/*
+				/*
 				List<DocumentResult> dr = createDocumentsResulted(hits, query);
 				for(DocumentResult d : dr){
 					System.out.println("title"+" "+d.getTitle());
@@ -113,51 +159,43 @@ public class Searcher {
 				}
 				// resultsListerAndNavigator(in, hits, hitsPerPage,
 				// highlighter);
-*/
+				 */
 			} catch (ParseException e) {
 				System.err.println("Incorrect Query");
 			}
 		}
 	}
-/*
-	private static List<DocumentResult> createDocumentsResulted(ScoreDoc[] hits, Query query) throws IOException, InvalidTokenOffsetsException {
-		SimpleHTMLFormatter htmlFormatter = new SimpleHTMLFormatter();
-		Highlighter highlighter = new Highlighter(htmlFormatter,
-				new QueryScorer(query));
-		//DocumentResult[] docResArray = new DocumentResult[hits.length];
-		List<DocumentResult> docResArray = new ArrayList<DocumentResult>();
-		
-		for (int i = 0; i < hits.length; i++) {
-			DocumentResult docRes = new DocumentResult();
-			int docId = hits[i].doc;
-			Document doc = searcher.doc(docId);
-			//docRes.setRelatedDocument(moreLikeThis(3, docId));
-			String url = doc.get("url");
-			if (url != null) {
-				docRes.setUrl(url);
-				String title = doc.get("title");
-				if (title != null) {
-					docRes.setTitle(title);
-				}
 
-				StringBuilder builder = new StringBuilder();
-				for (TextFragment frag : getHighlights(docId, highlighter))
-					if ((frag != null) && (frag.getScore() > 0)) {
-						String snippet = frag.toString().replaceAll("\\s+", " ");
-						builder.append(snippet).append("...");
-					}
-				if (builder.length() != 0)
-					docRes.setHighlights(builder.toString());
 
+	public List<EntryMappedBean> searchRecordFor(String wikid) throws IOException, UnsupportedEncodingException {
+
+		List<EntryMappedBean> mappingResults = new ArrayList<EntryMappedBean>();
+		int maxHits = 10;
+
+		reader = DirectoryReader.open(FSDirectory.open(new File(IndexPath)));
+		searcher = new IndexSearcher(reader);
+		analyzer = new StandardAnalyzer(Version.LUCENE_47);
+		parser = new QueryParser(Version.LUCENE_47, Field, analyzer);
+
+
+		try {
+			Query query = parser.parse(wikid);
+			System.out.println("Searching...");
+
+			TopDocs results = searcher.search(query, 5 * maxHits);
+			ScoreDoc[] hits = results.scoreDocs;
+
+			for(int i=0;i<hits.length;++i) {
+				int docId = hits[i].doc;
+				Document d = searcher.doc(docId);
+				mappingResults.add(new EntryMappedBean(d.get("title"),  d.get("mid")));
 			}
 
-			docResArray.add(docRes);
+		} catch (ParseException e) {
+			System.err.println("Incorrect Query");
 		}
-
-		return docResArray;
-
+		return mappingResults;
 	}
-*/
 
 
 
