@@ -3,7 +3,7 @@ import edu.jhu.nlp.wikipedia.*;
 public class WikyXMLTest {
 	public static void main(String[] args) {
 
-		WikiXMLParser wxp = WikiXMLParserFactory.getDOMParser("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml-p000000010p000010000");
+		WikiXMLParser wxp = WikiXMLParserFactory.getDOMParser("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml");
 		try {
 			wxp.parse();
 			WikiPageIterator it = wxp.getIterator();
