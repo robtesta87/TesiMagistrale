@@ -1,5 +1,6 @@
 package test;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,18 +17,30 @@ public class TestFinalParseDumpWiki {
 	static  class DemoArticleFilter implements IArticleFilter {
 
 		public void process(WikiArticle page, Siteinfo siteinfo) {
+			
+			
             System.out.println("----------------------------------------");
             System.out.println(page.getTitle());
             
             System.out.println("----------------------------------------");
             System.out.println(page.getText());
            
+            File file = new File("output/"+page.getTitle()+".txt");
+        	try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+				bw.write(page.getText());
+				bw.flush();
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     }
 		public static void main(String[] args) throws IOException {
 			Date start = new Date();
 			// Example:
 			// String bz2Filename = "c:\\temp\\<the dump file name>.xml.bz2";
-			String bz2Filename = "/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2";
+			String bz2Filename = "/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2";
 			File filename = new File(bz2Filename);
 			try {
 				IArticleFilter handler = new DemoArticleFilter();
