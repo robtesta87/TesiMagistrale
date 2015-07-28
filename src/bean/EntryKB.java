@@ -10,12 +10,10 @@ public class EntryKB {
 	private String predicate;
 	private String title1;
 	private String title2;
-	private List<String> types1;
-	private List<String> types2;
+	private String types1;
+	private String types2;
 	
 	public EntryKB() {
-		types1 = new ArrayList<String>();
-		types2 = new ArrayList<String>();
 	}
 
 	public String getMid1() {
@@ -58,19 +56,19 @@ public class EntryKB {
 		this.title2 = ne2;
 	}
 
-	public List<String> getTypes1() {
-		return types1;
+	public String[] getTypes1() {
+		return types1.split(",");
 	}
 
-	public void setTypes1(List<String> types1) {
+	public void setTypes1(String types1) {
 		this.types1 = types1;
 	}
 
-	public List<String> getTypes2() {
-		return types2;
+	public String[] getTypes2() {
+		return types2.split(",");
 	}
 
-	public void setTypes2(List<String> types2) {
+	public void setTypes2(String types2) {
 		this.types2 = types2;
 	}
 
@@ -83,7 +81,6 @@ public class EntryKB {
 		result = prime * result + ((title1 == null) ? 0 : title1.hashCode());
 		result = prime * result + ((title2 == null) ? 0 : title2.hashCode());
 		result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
-		result = prime * result + ((types1 == null) ? 0 : types1.hashCode());
 		result = prime * result + ((types2 == null) ? 0 : types2.hashCode());
 		return result;
 	}
@@ -122,17 +119,18 @@ public class EntryKB {
 				return false;
 		} else if (!predicate.equals(other.predicate))
 			return false;
-		if (types1 == null) {
-			if (other.types1 != null)
-				return false;
-		} else if (!types1.equals(other.types1))
-			return false;
 		if (types2 == null) {
 			if (other.types2 != null)
 				return false;
 		} else if (!types2.equals(other.types2))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "EntryKB [mid1=" + mid1 + ", mid2=" + mid2 + ", predicate=" + predicate + ", title1=" + title1
+				+ ", title2=" + title2 + ", types1=" + types1 + ", types2=" + types2 + "]";
 	}
 	
 	

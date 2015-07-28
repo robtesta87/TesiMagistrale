@@ -62,37 +62,23 @@ public class InvertedIndexKB {
 			types1 = fieldsRecord[5];
 			types2 = fieldsRecord[6];
 			
-			
-			
 			System.out.println(mid1+" "+mid2+" "+predicate+" "+title1+" "+title2+" "+types1+" "+types2);
 
 			//creazione del Document con i relativi campi d'interesse
 			Document doc = new Document();
 
 			/*
-			Field mid1Field = new TextField("mid1", mid1, Field.Store.YES);
-			mid1Field.setBoost(2f);
-
-			Field mid2Field = new TextField("mid2", mid2,Field.Store.YES);
-			mid2Field.setBoost(2f);
-				
-		
-
-			doc.add(mid1Field);
-			doc.add(mid2Field);
-			
+			String mid1_mid2 = mid1+","+mid2;
+			Field coupleOfMidField = new TextField("coupleOfMid",mid1_mid2,Field.Store.YES);
+			coupleOfMidField.setBoost(2.0f);
 			*/
 			
-			String mid1_mid2 = "("+mid1+","+mid2+")";
-//			Field coupleOfMidField = new TextField("coupleOfMid",mid1_mid2,Field.Store.YES);
-//			coupleOfMidField.setBoost(2f);
 			
 			
-			Field mid1Field = new TextField("mid1",mid1,Field.Store.YES);
-			mid1Field.setBoost(2f);
-			Field mid2Field = new TextField("mid2",mid2,Field.Store.YES);
-			mid2Field.setBoost(2f);
-			
+			Field mid1Field= new TextField("mid1",mid1,Field.Store.YES);
+			mid1Field.setBoost(2.0f);
+			Field mid2Field= new TextField("mid2",mid2,Field.Store.YES);
+			mid2Field.setBoost(2.0f);
 			
 			Field predicateField = new StringField("predicate",predicate,Field.Store.YES);
 			Field title1Field = new StringField("title1",title1,Field.Store.YES);
@@ -102,9 +88,9 @@ public class InvertedIndexKB {
 			
 			
 			
-//			doc.add(coupleOfMidField);
 			doc.add(mid1Field);
 			doc.add(mid2Field);
+//			doc.add(coupleOfMidField);
 			doc.add(predicateField);
 			doc.add(title1Field);
 			doc.add(title2Field);
