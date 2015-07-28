@@ -1,6 +1,5 @@
 package persistence.dao;
 
-import java.util.List;
 
 import bean.EntryMappedBean;
 

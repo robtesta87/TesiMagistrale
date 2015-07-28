@@ -1,8 +1,5 @@
 package bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class EntryKB {
 
 	private String mid1;

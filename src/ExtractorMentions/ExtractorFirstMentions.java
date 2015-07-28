@@ -32,15 +32,7 @@ public  class ExtractorFirstMentions {
 				wikiIdToText.put(stringCleaned, stringCleaned);
 			}
 			
-		}
-		
-		
-		
-		
-		
-		
-		
-		
+		}	
 		
 		return wikiIdToText;
 	}

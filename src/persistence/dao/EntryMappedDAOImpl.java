@@ -1,7 +1,6 @@
 package persistence.dao;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import bean.EntryMappedBean;
@@ -49,7 +48,7 @@ public class EntryMappedDAOImpl implements EntryMappedDAO {
 		EntryMappedBean mappingBean = dao.getMidFromWikID(wikid);
 		if(mappingBean!=null){
 			System.out.println("Ricerca per :"+wikid);
-			System.out.println("Risultato: "+mappingBean.toString());
+			System.out.println("Risultato: "+mappingBean.getMid());
 		}
 		else{
 			System.out.println("Nessun risultato per "+wikid+"!");
