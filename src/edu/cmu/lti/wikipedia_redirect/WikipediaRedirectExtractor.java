@@ -16,6 +16,10 @@
 package edu.cmu.lti.wikipedia_redirect;
 
 import java.io.BufferedReader;
+
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -50,6 +54,11 @@ public class WikipediaRedirectExtractor {
     Map<String,String> redirectData = new HashMap<String,String>();
     InputStreamReader isr = new InputStreamReader(fis, "utf-8");
     BufferedReader br = new BufferedReader(isr);
+    /*BufferedReader br = new BufferedReader(
+            new InputStreamReader(
+                new BZip2CompressorInputStream(
+                        new BufferedInputStream(
+                                new FileInputStream(f)))));*/
     String title = null;
     String text = null;
     String line = null;
@@ -120,6 +129,8 @@ public class WikipediaRedirectExtractor {
   }
   
   public static void main(String[] args) throws Exception {
-    new WikipediaRedirectExtractor().run("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml");
+    //new WikipediaRedirectExtractor().run("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2");
+	new WikipediaRedirectExtractor().run("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml");
+
   }
 }
