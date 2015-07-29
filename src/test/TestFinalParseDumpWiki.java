@@ -38,9 +38,10 @@ public class TestFinalParseDumpWiki {
     }
 		public static void main(String[] args) throws IOException {
 			Date start = new Date();
-			// Example:
-			// String bz2Filename = "c:\\temp\\<the dump file name>.xml.bz2";
+			
 			String bz2Filename = "/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2";
+			//String bz2Filename = "/media/roberto/Elements/TesiMagistrale/componenti/enwiki-latest-pages-articles.xml.bz2";
+
 			File filename = new File(bz2Filename);
 			try {
 				IArticleFilter handler = new DemoArticleFilter();

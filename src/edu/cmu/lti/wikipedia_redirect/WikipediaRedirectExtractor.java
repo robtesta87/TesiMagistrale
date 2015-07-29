@@ -120,6 +120,6 @@ public class WikipediaRedirectExtractor {
   }
   
   public static void main(String[] args) throws Exception {
-    new WikipediaRedirectExtractor().run("/home/roberto/Scrivania/enwiki-latest-pages-articles1.xml-p000000010p000010000");
+    new WikipediaRedirectExtractor().run("/home/roberto/Scrivania/TesiMagistrale/enwiki-latest-pages-articles1.xml");
   }
 }
