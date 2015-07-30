@@ -12,7 +12,7 @@ import info.bliki.wiki.model.WikiModel;
 public class TestFinalCleanTextDumpWiki {
 
 
-	public static final String pathFileInputFile = "/home/chris88/Scrivania/Alberta.txt";
+	public static final String pathFileInputFile = "/home/roberto/Scrivania/Alberta.txt";
 
 	public static final String TEST = "This is a [[Hello World]] '''example''' [[Silvio Berlusconi|Berlusca]]";
 
@@ -29,7 +29,7 @@ public class TestFinalCleanTextDumpWiki {
     
     public static void cleanedDumpArticle(String pathInputFile){
     	
-    	final String pathFileOutputFile = "/home/chris88/Scrivania/Alberta_cleaned.txt";
+    	final String pathFileOutputFile = "/home/roberto/Scrivania/Alberta_cleaned.txt";
 
     	WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
 
