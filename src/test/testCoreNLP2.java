@@ -23,8 +23,7 @@ public class testCoreNLP2 {
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
 		// read some text in the text variable
 		//String text = "As an anti-dogmatic philosophy, anarchism draws on many currents of thought and strategy. Anarchism does not offer a fixed body of doctrine from a single particular world view, instead fluxing and flowing as a philosophy.[19] There are many types and traditions of anarchism, not all of which are mutually exclusive.[20] Anarchist schools of thought can differ fundamentally, supporting anything from extreme individualism to complete collectivism.[10] Strains of anarchism have often been divided into the categories of social and individualist anarchism or similar dual classifications.[21][22] Anarchism is usually considered a radical left-wing ideology,[23][24] and much of anarchist economics and anarchist legal philosophy reflect anti-authoritarian interpretations of communism, collectivism, syndicalism, mutualism, or participatory economics. Bill Clinton was born in Italy.";
-		String text = "In April 2012, the Zambian Development Agency (ZDA) and an Angolan company signed a memorandum of understanding (MoU) to build a multi-product pipeline from [[Lobito]] to [[Lusaka]], [[Zambia]], to deliver various refined products to Zambia.<ref>{{cite news |url=http://www.times.co.zm/?p=4888|title=Govt, Angola Ink U.S.$2.5 Billion Oil Deal |author=Chila Namaiko |publisher=Times of Zambia|location=Lusaka, Zambia|date=14 April 2012|accessdate=29 May 2012}}</ref><ref>{{cite web |url= http://www.times.co.zm/?p=8706 |title=Angola ready to ‘oil’ Zambia|work=Times of Zambia|location=Lusaka, Zambia|date=9 May 2012|accessdate=29 May 2012}}</ref>";
-
+		String text = "Back to the Future is a 1985 American comic science fiction film directed by Robert Zemeckis, written by Zemeckis and Bob Gale, produced by Gale and Neil Canton, and stars Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin Glover and Thomas F. Wilson. Steven Spielberg, Kathleen Kennedy, and Frank Marshall served as executive producers. In the film, teenager Marty McFly (Fox) is sent back in time to 1955, where he meets his future parents in high school and accidentally becomes his mother's romantic interest. Marty must repair the damage to history by causing his parents-to-be to fall in love, and with the help of eccentric scientist Dr. Emmett \"Doc\" Brown (Lloyd), he must find a way to return to 1985.";
 				// create an empty Annotation just with the given text
 				Annotation document = new Annotation(text);
 
@@ -40,6 +39,8 @@ public class testCoreNLP2 {
 			for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
 		        // this is the text of the token
 		        String word = token.get(TextAnnotation.class);
+		        
+		        System.out.println("Word: "+word);
 		        // this is the POS tag of the token
 		        String pos = token.get(PartOfSpeechAnnotation.class);
 		        // this is the NER label of the token
