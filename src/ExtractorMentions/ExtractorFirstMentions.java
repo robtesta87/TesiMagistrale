@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public  class ExtractorFirstMentions {
 	
-	final static String mentionRegex = "\\[\\[[\\w+\\s|()_-]*\\]\\]";	
+	final static String mentionRegex = "\\[\\[[\\w+\\s#\\|\\(\\)_-]*\\]\\]";	
 	public static Map<String,String> ExtractMentions (String text){
 		
 		Map<String,String> wikiIdToText = new HashMap<String, String>();
@@ -25,7 +25,8 @@ public  class ExtractorFirstMentions {
 			
 			if(stringCleaned.contains("|")){
 				String[] splitted = stringCleaned.split("\\|");
-				wikiIdToText.put(splitted[0], splitted[1]);
+				//primo campo: text secondo campo: wikiid
+				wikiIdToText.put(splitted[1], splitted[0]);
 				System.out.println("String 0:"+splitted[0]);
 			}
 			else{
@@ -37,7 +38,7 @@ public  class ExtractorFirstMentions {
 		return wikiIdToText;
 	}
 	public static void main(String[] args) {
-		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]";
+		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]]";
 		Map<String,String> wikidToText = ExtractMentions(mentionWiki);
 		Set<String> wikidKeys = wikidToText.keySet();
 		
