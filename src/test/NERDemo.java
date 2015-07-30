@@ -11,8 +11,11 @@ import edu.stanford.nlp.util.Triple;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /** This is a demo of calling CRFClassifier programmatically.
@@ -41,25 +44,58 @@ import java.util.List;
  */
 
 public class NERDemo {
-	
-	public List<String> analyzeThisFile(String path){
-		List<String> annotationsNE = new ArrayList<String>();
+
+	public static Set<String> analyzeThisFile(String path){
+
+		String serializedClassifier = "classifiers/english.conll.4class.distsim.crf.ser.gz";
+
+
+		Set<String> annotationsNE = new HashSet<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
-			
-			
-			
-			
+			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+			String line = "";
+			while((line = br.readLine())!=null){
+				List<Triple<String,Integer,Integer>> triples = classifier.classifyToCharacterOffsets(line);
+				for (Triple<String,Integer,Integer> trip : triples) {
+					annotationsNE.add(line.substring(trip.second(), trip.third()));
+				}
+			}
+		
+			System.out.println("Named Entity TROVATE");
+			for(String ne : annotationsNE)
+				System.out.println(ne);
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
 		return annotationsNE;
-		
+
 	}
 
+
+
+
+
+
 	public static void main(String[] args) throws Exception {
+		String path = "/home/chris88/Scrivania/Alberta_cleaned.txt";
+		analyzeThisFile(path);
+		
+		
+	}
+		/*
 
 		String serializedClassifier = "classifiers/english.conll.4class.distsim.crf.ser.gz";
 
@@ -124,6 +160,8 @@ public class NERDemo {
 		System.out.println("---");
 
 	}
+	*/
+
 
 
 }
