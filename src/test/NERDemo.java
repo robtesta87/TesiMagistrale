@@ -90,7 +90,7 @@ public class NERDemo {
 
 
 	public static void main(String[] args) throws Exception {
-		String path = "/home/roberto/Scrivania/Alberta_cleaned.txt";
+		String path = "/home/chris88/Scrivania/Alberta_cleaned.txt";
 		analyzeThisFile(path);
 		
 		

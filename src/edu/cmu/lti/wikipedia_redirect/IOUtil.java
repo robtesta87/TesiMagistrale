@@ -39,13 +39,17 @@ public class IOUtil {
       outputDir.mkdirs();
     }
     WikipediaRedirect list = new WikipediaRedirect(redirectData);
-    
     File txtFile = new File(outputDir, "wikipedia_redirect.txt");
     FileOutputStream fosTxt = new FileOutputStream(txtFile);
     OutputStreamWriter osw = new OutputStreamWriter(fosTxt, "utf-8");
     BufferedWriter bw = new BufferedWriter(osw);
+//    int counter = 0;
     for ( Entry<String,String> entry : list.entrySet() ) {
+//    	if(counter==100)
+//    		break;
+//    	System.out.println(counter);
       bw.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
+//      counter++;
     }
     bw.flush();
     bw.close();

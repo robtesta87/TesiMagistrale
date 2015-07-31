@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public  class ExtractorFirstMentions {
 	
 	final static String mentionRegex = "\\[\\[[\\w+\\s#\\|\\(\\)_-]*\\]\\]";	
-	public static Map<String,String> ExtractMentions (String text){
+	public  Map<String,String> extractMentions (String text){
 		
 		Map<String,String> wikiIdToText = new HashMap<String, String>();
 		Pattern pattern = Pattern.compile(mentionRegex);
@@ -37,10 +37,32 @@ public  class ExtractorFirstMentions {
 		
 		return wikiIdToText;
 	}
+	
+	
+public Map<String,String> addAnnotations(Set<String> entities, Map<String,String> textToMention){
+	for(String currentEntity : entities){
+		if(!textToMention.containsKey(currentEntity)){
+			//interrogare l'indice di redirect
+			//aggiungere in caso positivo il risultato alla map
+		}
+	}
+	
+	
+	
+	return textToMention;
+}
+	
 	public static void main(String[] args) {
+		
 		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]]";
-		Map<String,String> wikidToText = ExtractMentions(mentionWiki);
+		ExtractorFirstMentions extractor = new ExtractorFirstMentions();
+		Map<String,String> wikidToText = extractor.extractMentions(mentionWiki);
 		Set<String> wikidKeys = wikidToText.keySet();
+		
+		
+		SentenceDetect sd = new SentenceDetect();
+		EntityDetect ed = new EntityDetect();
+		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
 		
 		for(String key: wikidKeys){
 			System.out.println(key+"->"+wikidToText.get(key));

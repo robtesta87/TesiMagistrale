@@ -9,7 +9,7 @@ import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.ling.Sentence;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 
-public class sentenceDetect {
+public class SentenceDetect {
 	//dd
 	public static List<String> getSentences(String text){
 		Reader reader = new StringReader(text);
