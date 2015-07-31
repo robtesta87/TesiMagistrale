@@ -51,7 +51,7 @@ public class IOUtil {
 			System.out.println(entry.getKey()+"\t"+entry.getValue());
 			//bw.append(entry.getKey()+"\t"+entry.getValue()+"\n" );
 			out.println(entry.getKey()+"\t"+entry.getValue());
-			//bw.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
+			//w.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
 			//bw.flush();
 		}
 		out.close();

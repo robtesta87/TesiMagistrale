@@ -144,6 +144,7 @@ public class WikipediaRedirectExtractor {
 	}
 
 	public static void main(String[] args) throws Exception {
+		 
 		new WikipediaRedirectExtractor().run();
 //		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-20150702-pages-articles1.xml-p000000010p000010000.bz2");
 //		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml");
