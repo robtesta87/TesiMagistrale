@@ -54,7 +54,6 @@ public class WikipediaRedirectExtractor {
 		Map<String,String> redirectData = new HashMap<String,String>();
 		//    InputStreamReader isr = new InputStreamReader(fis, "utf-8");
 		//    BufferedReader br = new BufferedReader(isr);
-//		byte [] buffer = new byte[8192];
 		BufferedReader br = new BufferedReader(
 				new InputStreamReader(
 						new BZip2CompressorInputStream(
@@ -131,7 +130,10 @@ public class WikipediaRedirectExtractor {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles.xml.bz2");
+		
+		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-20150702-pages-articles1.xml-p000000010p000010000.bz2");
+
+		//		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles.xml.bz2");
 //		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml");
 
 	}
