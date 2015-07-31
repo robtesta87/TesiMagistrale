@@ -19,9 +19,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -39,19 +41,23 @@ public class IOUtil {
 			outputDir.mkdirs();
 		}
 		WikipediaRedirect list = new WikipediaRedirect(redirectData);
+		PrintWriter out=null;
+		out = new PrintWriter(new BufferedWriter(new FileWriter(outputDir+"/wikiRedidirect.txt", true)));
 		File txtFile = new File(outputDir, "wikipedia_redirect"+count+".txt");
-		FileOutputStream fosTxt = new FileOutputStream(txtFile);
-		OutputStreamWriter osw = new OutputStreamWriter(fosTxt, "utf-8");
-		BufferedWriter bw = new BufferedWriter(osw);
+		//FileOutputStream fosTxt = new FileOutputStream(txtFile);
+		//OutputStreamWriter osw = new OutputStreamWriter(fosTxt, "utf-8");
+		//BufferedWriter bw = new BufferedWriter(osw);
 		for (Entry<String,String> entry : list.entrySet() ) {
 			System.out.println(entry.getKey()+"\t"+entry.getValue());
-			bw.append(entry.getKey()+"\t"+entry.getValue()+"\n" );
+			//bw.append(entry.getKey()+"\t"+entry.getValue()+"\n" );
+			out.println(entry.getKey()+"\t"+entry.getValue());
 //			bw.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
-			bw.flush();
+			//bw.flush();
 		}
-		bw.close();
-		osw.close();
-		fosTxt.close();
+		out.close();
+		//bw.close();
+		//osw.close();
+		//fosTxt.close();
 		System.out.println("Saved redirect data in text format: "+txtFile.getAbsolutePath());
 
 		File objFile = new File(outputDir, "wikipedia_redirect"+count+".ser");

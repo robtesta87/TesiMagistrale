@@ -41,7 +41,7 @@ public class WikipediaRedirectExtractor {
 	private static String textPattern     = "      <text xml";
 	private static Pattern pRedirect = Pattern.compile("#[ ]?[^ ]+[ ]?\\[\\[(.+?)\\]\\]", Pattern.CASE_INSENSITIVE);
 	
-	private static final String directoryDump = "/home/chris88/Documenti/componenti/dump-wiki-pages/";
+	private static final String directoryDump = "/home/roberto/Scrivania/TesiMagistrale/dump/";
 
 	public void run() throws Exception {
 		int invalidCount = 0;
