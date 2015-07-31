@@ -62,7 +62,7 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 		
 		SentenceDetect sd = new SentenceDetect();
 		EntityDetect ed = new EntityDetect();
-		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
+//		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
 		
 		for(String key: wikidKeys){
 			System.out.println(key+"->"+wikidToText.get(key));
