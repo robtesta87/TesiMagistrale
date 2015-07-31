@@ -39,71 +39,85 @@ public class WikipediaRedirectExtractor {
 	private static String titlePattern    = "    <title>";
 	private static String redirectPattern = "    <redirect";
 	private static String textPattern     = "      <text xml";
-	private static Pattern pRedirect = Pattern.compile(
-			"#[ ]?[^ ]+[ ]?\\[\\[(.+?)\\]\\]", Pattern.CASE_INSENSITIVE);
+	private static Pattern pRedirect = Pattern.compile("#[ ]?[^ ]+[ ]?\\[\\[(.+?)\\]\\]", Pattern.CASE_INSENSITIVE);
+	
+	private static final String directoryDump = "/home/chris88/Documenti/componenti/dump-wiki-pages/";
 
-	public void run(String filepath) throws Exception {
+	public void run() throws Exception {
 		int invalidCount = 0;
 		long t0 = System.nanoTime();
-		File f = new File(filepath);
-		if (!f.exists()) {
-			System.err.println("ERROR: File not found at "+f.getAbsolutePath());
-			return;
-		}
-		FileInputStream fis = new FileInputStream(f);
-		Map<String,String> redirectData = new HashMap<String,String>();
-		//    InputStreamReader isr = new InputStreamReader(fis, "utf-8");
-		//    BufferedReader br = new BufferedReader(isr);
-		BufferedReader br = new BufferedReader(
-				new InputStreamReader(
-						new BZip2CompressorInputStream(
-								new BufferedInputStream(
-										new FileInputStream(f)))));
-		String title = null;
-		String text = null;
-		String line = null;
-		boolean isRedirect = false;
-		boolean inText = false;
 		
-		while ((line=br.readLine())!=null) {
-			if (line.startsWith(titlePattern)) {
-				title = line;
-				text = null;
-				isRedirect = false;  
-			}
-			if (line.startsWith(redirectPattern)) {
-				isRedirect = true;
-			}
-			if (isRedirect && (line.startsWith(textPattern) || inText)) {
-				Matcher m = pRedirect.matcher(line); // slow regex shouldn't be used until here.
-				if (m.find()) { // make sure the current text field contains [[...]]
-					text  = line;
-					try {
-						title = cleanupTitle(title);
-						String redirectedTitle = m.group(1);
-						if ( isValidAlias(title, redirectedTitle) ) {
-							redirectData.put(title, redirectedTitle);
-						} else {
-							invalidCount++;
-						}
-					} catch ( StringIndexOutOfBoundsException e ) {
-						System.out.println("ERROR: cannot extract redirection from title = "+title+", text = "+text);
-						e.printStackTrace();
-					}
-				} else { // Very rare case 
-					inText = true;
+		 File dir = new File(directoryDump);
+		  File[] directoryListing = dir.listFiles();
+		  if (directoryListing != null) {
+			  int i = 1;
+		    for (File f : directoryListing) {
+		    	System.out.println("Analisi del file:"+ f.getAbsolutePath());
+		    	
+		    	/*
+				if (!f.exists()) {
+					System.err.println("ERROR: File not found at "+f.getAbsolutePath());
+					return;
 				}
-			}
-		}
-		br.close();
-//		isr.close();
-		fis.close();
-		System.out.println("---- Wikipedia redirect extraction done ----");
-		long t1 = System.nanoTime();
-		IOUtil.save(redirectData);
-		System.out.println("Discarded "+invalidCount+" redirects to wikipedia meta articles.");
-		System.out.println("Extracted "+redirectData.size()+" redirects.");
-		System.out.println("Done in "+((double)(t1-t0)/(double)1000000000)+" [sec]");
+				*/
+		    	
+				FileInputStream fis = new FileInputStream(f);
+				Map<String,String> redirectData = new HashMap<String,String>();
+				BufferedReader br = new BufferedReader(
+						new InputStreamReader(
+								new BZip2CompressorInputStream(
+										new BufferedInputStream(
+												new FileInputStream(f)))));
+				String title = null;
+				String text = null;
+				String line = null;
+				boolean isRedirect = false;
+				boolean inText = false;
+				
+				while ((line=br.readLine())!=null) {
+					if (line.startsWith(titlePattern)) {
+						title = line;
+						text = null;
+						isRedirect = false;  
+					}
+					if (line.startsWith(redirectPattern)) {
+						isRedirect = true;
+					}
+					if (isRedirect && (line.startsWith(textPattern) || inText)) {
+						Matcher m = pRedirect.matcher(line); // slow regex shouldn't be used until here.
+						if (m.find()) { // make sure the current text field contains [[...]]
+							text  = line;
+							try {
+								title = cleanupTitle(title);
+								String redirectedTitle = m.group(1);
+								if ( isValidAlias(title, redirectedTitle) ) {
+									redirectData.put(title, redirectedTitle);
+								} else {
+									invalidCount++;
+								}
+							} catch ( StringIndexOutOfBoundsException e ) {
+								System.out.println("ERROR: cannot extract redirection from title = "+title+", text = "+text);
+								e.printStackTrace();
+							}
+						} else { // Very rare case 
+							inText = true;
+						}
+					}
+				}
+				br.close();
+//				isr.close();
+				fis.close();
+				System.out.println("---- Wikipedia redirect extraction done ----");
+				long t1 = System.nanoTime();
+				IOUtil.save(redirectData,i);
+				System.out.println("Fine analisi del file:"+f.getName());
+				System.out.println("Discarded "+invalidCount+" redirects to wikipedia meta articles.");
+				System.out.println("Extracted "+redirectData.size()+" redirects.");
+				System.out.println("Done in "+((double)(t1-t0)/(double)1000000000)+" [sec]");
+		    	i++;
+		    }
+		  } 
+	
 	}
 
 	private String cleanupTitle( String title ) {
@@ -130,10 +144,8 @@ public class WikipediaRedirectExtractor {
 	}
 
 	public static void main(String[] args) throws Exception {
-		
-		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-20150702-pages-articles1.xml-p000000010p000010000.bz2");
-
-		//		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles.xml.bz2");
+		new WikipediaRedirectExtractor().run();
+//		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-20150702-pages-articles1.xml-p000000010p000010000.bz2");
 //		new WikipediaRedirectExtractor().run("/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml");
 
 	}

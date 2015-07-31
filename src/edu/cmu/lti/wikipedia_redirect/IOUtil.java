@@ -33,19 +33,20 @@ import java.util.Map.Entry;
  */
 public class IOUtil {
 
-	public static void save( Map<String,String> redirectData ) throws Exception {
+	public static void save( Map<String,String> redirectData, int count ) throws Exception {
 		File outputDir = new File("target");
 		if (!outputDir.exists()) {
 			outputDir.mkdirs();
 		}
 		WikipediaRedirect list = new WikipediaRedirect(redirectData);
-		File txtFile = new File(outputDir, "wikipedia_redirect.txt");
+		File txtFile = new File(outputDir, "wikipedia_redirect"+count+".txt");
 		FileOutputStream fosTxt = new FileOutputStream(txtFile);
 		OutputStreamWriter osw = new OutputStreamWriter(fosTxt, "utf-8");
 		BufferedWriter bw = new BufferedWriter(osw);
-		for ( Entry<String,String> entry : list.entrySet() ) {
+		for (Entry<String,String> entry : list.entrySet() ) {
 			System.out.println(entry.getKey()+"\t"+entry.getValue());
-			bw.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
+			bw.append(entry.getKey()+"\t"+entry.getValue()+"\n" );
+//			bw.write( entry.getKey()+"\t"+entry.getValue()+"\n" );
 			bw.flush();
 		}
 		bw.close();
@@ -53,7 +54,7 @@ public class IOUtil {
 		fosTxt.close();
 		System.out.println("Saved redirect data in text format: "+txtFile.getAbsolutePath());
 
-		File objFile = new File(outputDir, "wikipedia_redirect.ser");
+		File objFile = new File(outputDir, "wikipedia_redirect"+count+".ser");
 		FileOutputStream fosObj = new FileOutputStream(objFile);
 		ObjectOutputStream outObject = new ObjectOutputStream(fosObj);
 		outObject.writeObject(list);
