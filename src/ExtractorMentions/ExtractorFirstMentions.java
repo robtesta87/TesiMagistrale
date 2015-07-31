@@ -6,6 +6,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import persistence.dao.EntryRedirectDAO;
+import persistence.dao.EntryRedirectDAOImpl;
+import bean.EntryRedirect;
+
 
 
 public  class ExtractorFirstMentions {
@@ -13,7 +17,7 @@ public  class ExtractorFirstMentions {
 	final static String mentionRegex = "\\[\\[[\\w+\\s#\\|\\(\\)_-]*\\]\\]";	
 	public  Map<String,String> extractMentions (String text){
 		
-		Map<String,String> wikiIdToText = new HashMap<String, String>();
+		Map<String,String> textToWikID = new HashMap<String, String>();
 		Pattern pattern = Pattern.compile(mentionRegex);
 		Matcher matcher = pattern.matcher(text);
 		
@@ -26,16 +30,16 @@ public  class ExtractorFirstMentions {
 			if(stringCleaned.contains("|")){
 				String[] splitted = stringCleaned.split("\\|");
 				//primo campo: text secondo campo: wikiid
-				wikiIdToText.put(splitted[1], splitted[0]);
+				textToWikID.put(splitted[1], splitted[0]);
 				System.out.println("String 0:"+splitted[0]);
 			}
 			else{
-				wikiIdToText.put(stringCleaned, stringCleaned);
+				textToWikID.put(stringCleaned, stringCleaned);
 			}
 			
 		}	
 		
-		return wikiIdToText;
+		return textToWikID;
 	}
 	
 	
@@ -44,6 +48,11 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 		if(!textToMention.containsKey(currentEntity)){
 			//interrogare l'indice di redirect
 			//aggiungere in caso positivo il risultato alla map
+			EntryRedirectDAO dao = new EntryRedirectDAOImpl();
+			EntryRedirect mappingBean = dao.getwikIDFromRedirect(currentEntity);
+			if (mappingBean!=null){
+				textToMention.put(mappingBean.getRedirect(),mappingBean.getWikid() );
+			}
 		}
 	}
 	
@@ -54,14 +63,18 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 	
 	public static void main(String[] args) {
 		
-		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]]";
+		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
 		ExtractorFirstMentions extractor = new ExtractorFirstMentions();
 		Map<String,String> wikidToText = extractor.extractMentions(mentionWiki);
+		
+		EntityDetect ed = new EntityDetect();
+		SentenceDetect sd = new SentenceDetect();
+		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
+	
+		wikidToText = extractor.addAnnotations(namedEntities, wikidToText);
 		Set<String> wikidKeys = wikidToText.keySet();
 		
 		
-		SentenceDetect sd = new SentenceDetect();
-		EntityDetect ed = new EntityDetect();
 //		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
 		
 		for(String key: wikidKeys){
