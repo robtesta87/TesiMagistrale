@@ -1,33 +1,27 @@
-package index.mapping_table;
-
+package index.redirect;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.util.Version;
-import org.apache.lucene.search.spell.Dictionary;
-import org.apache.lucene.search.spell.LuceneDictionary;
-import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
 
-public class invertedIndexTitleMid {
-	static final String IndexPath = "util/index_lucene/";
-	static final String TitleMidPath = "/home/roberto/Scrivania/TesiMagistrale/title_wkid_mid.txt";
+public class InvertedIndexRedirect {
+	static final String IndexPath = "util/index_redirect/";
+	static final String TitleMidPath = "util/redirect.txt";
 
 	public static void main(String[] args) throws IOException {
 
@@ -36,7 +30,7 @@ public class invertedIndexTitleMid {
 
 		System.out.println("Creazione Indice inverso nella direcory: " +IndexPath + "'...");
 		//Analyzer analyzer = new StopAnalyzer(Version.LUCENE_47);
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_47);
+		Analyzer analyzer = new KeywordAnalyzer();
 
 		Directory index = FSDirectory.open(new File((IndexPath)));
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_47,analyzer);
@@ -45,31 +39,31 @@ public class invertedIndexTitleMid {
 		IndexWriter writer = new IndexWriter(index, config);
 		Date start = new Date();
 		String [] fieldsText;
-		String title = "";
-		String mid = "";
+		String redirect = "";
+		String wikID = "";
 		String line = "";
 		int i=0;
 		while((line=b.readLine())!=null){
-			//line=b.readLine();
-			fieldsText = line.split(" ");
-			title = fieldsText[0];
-			mid = fieldsText[2];
-			System.out.println(title+" "+mid);
-			if (!title.equals("-")){
-				//creazione del Document con i relativi campi d'interesse
-				Document doc = new Document();
+			fieldsText = line.split("\t");
+			redirect = fieldsText[0];
+			redirect = redirect.replaceAll(" ", "_");
+			wikID = fieldsText[1];
+			wikID = wikID.replaceAll(" ", "_");
+			System.out.println(redirect+"###"+wikID);
 
-				Field titleField = new TextField("title", title, Field.Store.YES);
-				titleField.setBoost(2f);
+			//creazione del Document con i relativi campi d'interesse
+			Document doc = new Document();
 
-				Field midField = new TextField("mid", mid,Field.Store.YES);
-				midField.setBoost(1.5f);
+			Field redirectFiled = new TextField("redirect", redirect, Field.Store.YES);
+			redirectFiled.setBoost(2f);
 
-				doc.add(titleField);
-				doc.add(midField);
+			Field wikIDField = new TextField("wikID", wikID,Field.Store.YES);
+			wikIDField.setBoost(1.5f);
 
-				writer.addDocument(doc);
-			}
+			doc.add(redirectFiled);
+			doc.add(wikIDField);
+
+			writer.addDocument(doc);
 			i++;
 		}
 
@@ -85,6 +79,4 @@ public class invertedIndexTitleMid {
 		System.out.println("CONCLUSA");
 
 	}
-
-
 }
