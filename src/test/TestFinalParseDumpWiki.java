@@ -25,7 +25,7 @@ public class TestFinalParseDumpWiki {
             System.out.println("----------------------------------------");
             System.out.println(page.getText());
            
-            File file = new File("output/"+page.getTitle()+".txt");
+            File file = new File("/home/roberto/Scrivania/TesiMagistrale/output/"+page.getTitle()+".txt");
         	try {
 				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 				bw.write(page.getText());
@@ -39,7 +39,9 @@ public class TestFinalParseDumpWiki {
 		public static void main(String[] args) throws IOException {
 			Date start = new Date();
 			
-			String bz2Filename = "/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2";
+			String bz2Filename = "/home/roberto/Scrivania/TesiMagistrale/dump/enwiki-20150702-pages-articles2.xml-p000010002p000025001.bz2";
+
+			//String bz2Filename = "/home/chris88/Documenti/componenti/dump-wiki-pages/enwiki-latest-pages-articles1.xml-p000000010p000010000.bz2";
 			//String bz2Filename = "/media/roberto/Elements/TesiMagistrale/componenti/enwiki-latest-pages-articles.xml.bz2";
 
 			File filename = new File(bz2Filename);

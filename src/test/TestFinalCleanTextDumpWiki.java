@@ -14,16 +14,16 @@ public class TestFinalCleanTextDumpWiki {
 
 	public static final String pathFileInputFile = "/home/roberto/Scrivania/Alberta.txt";
 
-	public static final String TEST = "This is a [[Hello World]] '''example''' [[Silvio Berlusconi|Berlusca]]";
+	public static final String TEST = "This is a [[Hello World]] '''example''' [[Silvio Berlusconi|Berlusca]] dagajshgf {{my template}}";
 
     public static void main(String[] args) {
     	
-    	/*
+    	
         WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
         String plainStr = wikiModel.render(new PlainTextConverter(), TEST);
         System.out.print(plainStr);
-    	*/
-    	cleanedDumpArticle(pathFileInputFile);
+    	
+    	//cleanedDumpArticle(pathFileInputFile);
     }
     
     
