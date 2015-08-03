@@ -25,7 +25,7 @@ public class sentenceDetect {
 	}
 
 	public static void main(String[] args) {
-		String paragraph = "Back to the Future is a 1985 American comic science fiction film directed by Robert Zemeckis, written by Zemeckis and Bob Gale, produced by Gale and Neil Canton, and stars Michael J. Fox, Christopher Lloyd, Lea Thompson, Crispin Glover and Thomas F. Wilson. Steven Spielberg, Kathleen Kennedy, and Frank Marshall served as executive producers. In the film, teenager Marty McFly (Fox) is sent back in time to 1955, where he meets his future parents in high school and accidentally becomes his mother's romantic interest. Marty must repair the damage to history by causing his parents-to-be to fall in love, and with the help of eccentric scientist Dr. Emmett \"Doc\" Brown (Lloyd), he must find a way to return to 1985.";
+		String paragraph = "The story of Dracula has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title Dracula, or The Undead shortly before the novel's publication and performed only once. Popular films include Dracula (1931), Dracula (alternative title: The Horror of Dracula) (1958), and Dracula (also known as Bram Stoker's Dracula) (1992). Dracula was also adapted as Nosferatu (1922), a film directed by the German director F. W. Murnau, without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"Count Orlok\".";
 		List<String> sentenceList = getSentences(paragraph);
 		int i=1;
 		for (String sentence : sentenceList) {

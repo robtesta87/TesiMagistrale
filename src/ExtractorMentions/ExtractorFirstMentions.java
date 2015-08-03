@@ -30,7 +30,7 @@ public  class ExtractorFirstMentions {
 			if(stringCleaned.contains("|")){
 				String[] splitted = stringCleaned.split("\\|");
 				//primo campo: text secondo campo: wikiid
-				textToWikID.put(splitted[1], splitted[0]);
+				textToWikID.put(splitted[0], splitted[1]);
 				System.out.println("String 0:"+splitted[0]);
 			}
 			else{
@@ -63,7 +63,7 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 	
 	public static void main(String[] args) {
 		
-		String mentionWiki = "This is  [[Hello world | sdkasdlas]] dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
+		String mentionWiki = "This is  [[Hello world | Hello world]] hgjkgy [[ciao mondo | Hello world]]dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
 		ExtractorFirstMentions extractor = new ExtractorFirstMentions();
 		Map<String,String> wikidToText = extractor.extractMentions(mentionWiki);
 		
