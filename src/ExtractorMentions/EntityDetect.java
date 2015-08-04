@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import edu.stanford.nlp.ie.AbstractSequenceClassifier;
@@ -14,16 +17,17 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.util.Triple;
 
 public class EntityDetect {
-	public static Set<String> getEntitiesFromPhrases(List<String> phrases){
+	public static Map<String,String> getEntitiesFromPhrases(List<String> phrases){
 
 		String serializedClassifier = "classifiers/english.conll.4class.distsim.crf.ser.gz";
-		Set<String> annotationsNE = new HashSet<String>();
+		Map<String,String> annotationsNE = new HashMap<String, String>();
 		try {
 			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
 				for(String currentPhrase : phrases){
 				List<Triple<String,Integer,Integer>> triples = classifier.classifyToCharacterOffsets(currentPhrase);
 				for (Triple<String,Integer,Integer> trip : triples) {
-					annotationsNE.add(currentPhrase.substring(trip.second(), trip.third()));
+					annotationsNE.put(currentPhrase.substring(trip.second(), trip.third()),trip.first);
+					//System.out.println("key: "+currentPhrase.substring(trip.second(), trip.third())+" value: "+trip.first);
 				}
 			}
 		
@@ -44,6 +48,38 @@ public class EntityDetect {
 		return annotationsNE;
 
 	}
+	
+	/*public static Set<String> getEntitiesFromPhrases(List<String> phrases){
+
+		String serializedClassifier = "classifiers/english.conll.4class.distsim.crf.ser.gz";
+		Set<String> annotationsNE = new HashSet<String>();
+		try {
+			AbstractSequenceClassifier<CoreLabel> classifier = CRFClassifier.getClassifier(serializedClassifier);
+				for(String currentPhrase : phrases){
+				List<Triple<String,Integer,Integer>> triples = classifier.classifyToCharacterOffsets(currentPhrase);
+				for (Triple<String,Integer,Integer> trip : triples) {
+					annotationsNE.add(currentPhrase.substring(trip.second(), trip.third()));
+					
+				}
+			}
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return annotationsNE;
+
+	}*/
 
 	public static void main(String[] args) {
 		//
@@ -52,13 +88,22 @@ public class EntityDetect {
 
 		SentenceDetect sd = new SentenceDetect();
 		EntityDetect ed = new EntityDetect();
-		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
+		Map<String,String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
 		
 		
-		for(String ne : namedEntities)
+		Iterator<String> keySetIterator = namedEntities.keySet().iterator();
+		while(keySetIterator.hasNext()){
+		String key = keySetIterator.next();
+		  System.out.println("key: " + key + " value: " + namedEntities.get(key));
+		}
+	
+
+		
+		
+		/*for(String ne : namedEntities)
 			System.out.println(ne);
+		*/
 		
-		System.out.println();
 		
 	}
 

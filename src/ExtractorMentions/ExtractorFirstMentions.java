@@ -4,6 +4,7 @@ import info.bliki.wiki.filter.PlainTextConverter;
 import info.bliki.wiki.model.WikiModel;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -22,9 +23,9 @@ public  class ExtractorFirstMentions {
 
 
 	public  WikiArticle extractMentions (String text, String title){
-		
+
 		WikiArticle wikiArticle = new WikiArticle();
-		
+
 		Map<String,String> textToWikID = new HashMap<String, String>();
 		Pattern pattern = Pattern.compile(mentionRegex);
 		Matcher matcher = pattern.matcher(text);
@@ -41,8 +42,8 @@ public  class ExtractorFirstMentions {
 				//primo campo: text secondo campo: wikiid
 				textToWikID.put(splitted[0], splitted[1]);
 				System.out.println("String 0:"+splitted[0]);
-				matcher.group().replace(mentionString, "[["+splitted[0]+"]]");
-				
+				//matcher.group().replace(mentionString, "[["+splitted[0]+"]]");
+				text = text.replace(mentionString, "[["+splitted[0]+"]]");
 			}
 			else{
 				textToWikID.put(stringCleaned, stringCleaned);
@@ -87,7 +88,7 @@ public  class ExtractorFirstMentions {
 	}*/
 
 
-	public Map<String,String> addAnnotations(Set<String> entities, Map<String,String> textToMention){
+	/*public Map<String,String> addAnnotations(Set<String> entities, Map<String,String> textToMention){
 		for(String currentEntity : entities){
 			if(!textToMention.containsKey(currentEntity)){
 				//interrogare l'indice di redirect
@@ -103,7 +104,27 @@ public  class ExtractorFirstMentions {
 
 
 		return textToMention;
+	}*/
+	public Map<String,String> addAnnotations(Map<String,String> entities, Map<String,String> textToMention){
+		Iterator<String> keySetIterator = entities.keySet().iterator();
+		while(keySetIterator.hasNext()){
+			String currentEntity = keySetIterator.next();
+			if(!textToMention.containsKey(currentEntity)){
+				//interrogare l'indice di redirect
+				//aggiungere in caso positivo il risultato alla map
+				EntryRedirectDAO dao = new EntryRedirectDAOImpl();
+				EntryRedirect mappingBean = dao.getwikIDFromRedirect(currentEntity);
+				if (mappingBean!=null){
+					textToMention.put(mappingBean.getWikid(), mappingBean.getRedirect() );
+				}
+			}
+		}
+
+
+
+		return textToMention;
 	}
+
 
 	public static void main(String[] args) {
 		//
@@ -122,7 +143,8 @@ public  class ExtractorFirstMentions {
 
 		EntityDetect ed = new EntityDetect();
 		SentenceDetect sd = new SentenceDetect();
-		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
+		//Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
+		Map<String,String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
 
 		wikidToText = extractor.addAnnotations(namedEntities, wikidToText);
 		Set<String> wikidKeys = wikidToText.keySet();

@@ -5,6 +5,7 @@ import java.util.Map;
 public class WikiArticle {
 	//
 	private String title;
+	private String wikid;
 	private Map<String,String> mantions;
 	private String text;
 	public String getTitle() {
@@ -16,6 +17,13 @@ public class WikiArticle {
 	
 	public Map<String, String> getMantions() {
 		return mantions;
+	}
+	
+	public String getWikid() {
+		return wikid;
+	}
+	public void setWikid(String wikid) {
+		this.wikid = wikid;
 	}
 	public void setMantions(Map<String, String> mantions) {
 		this.mantions = mantions;
