@@ -3,7 +3,7 @@ package bean;
 import java.util.Map;
 
 public class WikiArticle {
-	
+	//
 	private String title;
 	private Map<String,String> mantions;
 	private String text;
