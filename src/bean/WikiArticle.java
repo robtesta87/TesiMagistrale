@@ -1,7 +1,9 @@
 package bean;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class WikiArticle {
 	//
@@ -9,7 +11,14 @@ public class WikiArticle {
 	private String wikid;
 	private Map<String,String> persors;
 	private Set<String> mentions;
+	private Map<String,String> redirectWikid;
 	private String text;
+	
+	public WikiArticle(){
+		this.persors = new TreeMap<String,String>();
+		this.mentions = new HashSet<String>();
+		this.redirectWikid = new TreeMap<String,String>();
+	}
 	
 	public String getTitle() {
 		return title;
@@ -45,6 +54,16 @@ public class WikiArticle {
 		this.mentions = mentions;
 	}
 	
-	
-	
+	public void addMention (String mention){
+		this.mentions.add(mention);
+	}
+
+	public Map<String, String> getRedirectWikid() {
+		return redirectWikid;
+	}
+
+	public void addRedirectEntry (String redirect,String wikid){
+		this.redirectWikid.put(redirect, wikid);
+	}
+
 }
