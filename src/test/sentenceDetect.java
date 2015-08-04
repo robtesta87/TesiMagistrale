@@ -25,7 +25,7 @@ public class sentenceDetect {
 	}
 
 	public static void main(String[] args) {
-		String paragraph = "The story of Dracula has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title Dracula, or The Undead shortly before the novel's publication and performed only once. Popular films include Dracula (1931), Dracula (alternative title: The Horror of Dracula) (1958), and Dracula (also known as Bram Stoker's Dracula) (1992). Dracula was also adapted as Nosferatu (1922), a film directed by the German director F. W. Murnau, without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"Count Orlok\".";
+		String paragraph = "The story of Dracula has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title Dracula(1), or The Undead shortly before the novel's publication and performed only once. Popular films include Dracula (2) (1931), Dracula (alternative title: The Horror of Dracula) (1958), and Dracula  (also known as Bram Stoker's Dracula) (1992). Dracula was also adapted as Nosferatu (1922), a film directed by the German director F. W. Murnau, without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"Count Orlok\".";
 		List<String> sentenceList = getSentences(paragraph);
 		int i=1;
 		for (String sentence : sentenceList) {

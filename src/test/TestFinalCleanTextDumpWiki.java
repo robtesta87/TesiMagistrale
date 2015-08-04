@@ -14,7 +14,7 @@ public class TestFinalCleanTextDumpWiki {
 
 	public static final String pathFileInputFile = "/home/roberto/Scrivania/Alberta.txt";
 
-	public static final String TEST = "This is a [[Hello World]] '''example''' [[Silvio Berlusconi|Berlusca]] dagajshgf {{my template}}";
+	public static final String TEST = "This is a [[Hello World]]\"\"1\"\" '''example''' [[Silvio Berlusconi|Berlusca]] dagajshgf {{my template}}";
 
     public static void main(String[] args) {
     	

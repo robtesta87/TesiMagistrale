@@ -1,5 +1,8 @@
 package ExtractorMentions;
 
+import info.bliki.wiki.filter.PlainTextConverter;
+import info.bliki.wiki.model.WikiModel;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +54,7 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 			EntryRedirectDAO dao = new EntryRedirectDAOImpl();
 			EntryRedirect mappingBean = dao.getwikIDFromRedirect(currentEntity);
 			if (mappingBean!=null){
-				textToMention.put(mappingBean.getRedirect(),mappingBean.getWikid() );
+				textToMention.put(mappingBean.getWikid(), mappingBean.getRedirect() );
 			}
 		}
 	}
@@ -67,6 +70,11 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 		ExtractorFirstMentions extractor = new ExtractorFirstMentions();
 		Map<String,String> wikidToText = extractor.extractMentions(mentionWiki);
 		
+		//pulizia testo
+		WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
+        mentionWiki = wikiModel.render(new PlainTextConverter(), mentionWiki);
+		
+		
 		EntityDetect ed = new EntityDetect();
 		SentenceDetect sd = new SentenceDetect();
 		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
@@ -75,7 +83,7 @@ public Map<String,String> addAnnotations(Set<String> entities, Map<String,String
 		Set<String> wikidKeys = wikidToText.keySet();
 		
 		
-//		Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
+		//Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
 		
 		for(String key: wikidKeys){
 			System.out.println(key+"->"+wikidToText.get(key));
