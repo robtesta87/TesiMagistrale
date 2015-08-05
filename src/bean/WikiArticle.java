@@ -65,5 +65,9 @@ public class WikiArticle {
 	public void addRedirectEntry (String redirect,String wikid){
 		this.redirectWikid.put(redirect, wikid);
 	}
+	
+	public void addPerson (String person, String wikid){
+		this.persors.put(person, wikid);
+	}
 
 }

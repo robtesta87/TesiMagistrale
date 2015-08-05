@@ -93,7 +93,7 @@ public class SearcherRedirect {
 			try {
 				Query query = parser.parse(line);
 				String readableQuery = query.toString(Field);
-				System.out.println("Searching...");
+				//System.out.println("Searching...");
 
 				TopDocs results = searcher.search(query, 5 * hitsPerPage);
 				ScoreDoc[] hits = results.scoreDocs;
@@ -133,7 +133,7 @@ public class SearcherRedirect {
 
 		try {
 			Query query = parser.parse(redirect);
-			System.out.println("Searching...");
+			//System.out.println("Searching...");
 
 			TopDocs results = searcher.search(query, 5 * maxHits);
 			ScoreDoc[] hits = results.scoreDocs;
