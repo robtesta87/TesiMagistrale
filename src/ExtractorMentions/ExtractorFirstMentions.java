@@ -170,7 +170,8 @@ public  class ExtractorFirstMentions {
 		EntityDetect ed = new EntityDetect();
 		SentenceDetect sd = new SentenceDetect();
 		//Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
-		Map<String,String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
+		List<String> phrases = sd.getSentences(mentionWiki);
+		Map<String,String> namedEntities = ed.getEntitiesFromPhrases(phrases);
 
 		//estrazione entità riconosciute come PERSON
 		List<String> persons = new ArrayList<String>();
