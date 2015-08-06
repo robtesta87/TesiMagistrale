@@ -41,11 +41,14 @@ public class WikipediaRedirectExtractor {
 	private static String textPattern     = "      <text xml";
 	private static Pattern pRedirect = Pattern.compile("#[ ]?[^ ]+[ ]?\\[\\[(.+?)\\]\\]", Pattern.CASE_INSENSITIVE);
 	
-	private static final String directoryDump = "/home/roberto/Scrivania/TesiMagistrale/dump/";
-
+//	private static final String directoryDump = "/home/roberto/Scrivania/TesiMagistrale/dump/";
+	private static final String directoryDump = "/home/chris88/Documenti/componenti/dump-wiki-pages/";
+	
+	
 	public void run() throws Exception {
 		int invalidCount = 0;
 		long t0 = System.nanoTime();
+		long startTime = System.currentTimeMillis();
 		
 		 File dir = new File(directoryDump);
 		  File[] directoryListing = dir.listFiles();
@@ -113,11 +116,14 @@ public class WikipediaRedirectExtractor {
 				System.out.println("Fine analisi del file:"+f.getName());
 				System.out.println("Discarded "+invalidCount+" redirects to wikipedia meta articles.");
 				System.out.println("Extracted "+redirectData.size()+" redirects.");
-				System.out.println("Done in "+((double)(t1-t0)/(double)1000000000)+" [sec]");
+				System.out.println("Done file in "+((double)(t1-t0)/(double)1000000000)+" [sec]");
 		    	i++;
 		    }
 		  } 
 	
+		  long endTime = System.currentTimeMillis();
+		  double totalTime = (double)(endTime - startTime) / 1000 ;
+		  System.out.println("ANALISI COMPLETATA IN:"+totalTime+" sec (~"+(totalTime/60)+" min)");
 	}
 
 	private String cleanupTitle( String title ) {
