@@ -22,6 +22,7 @@ public class ProvaComparator {
 		map.put("Dracula Vampire","Dracula_Vampire");
 		map.put("Pippo","Goofy");
 		map.put("\"Million_Dollar_Man\"_Ted_DiBiase","Ted_DiBiase");
+		//fjkdsjflkjsdlfks
 		
 			
 		for(String key : map.keySet()){
