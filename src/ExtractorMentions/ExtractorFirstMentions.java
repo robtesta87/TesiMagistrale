@@ -175,32 +175,24 @@ public  class ExtractorFirstMentions {
 		return wikiArticle;
 	}
 
-	public static void main(String[] args) {
-
-
-
-
-		String title = "Dracula";
-		//String mentionWiki = "This is  [[Hello world | Hello world]] hgjkgy [[ciao mondo | Hello world]]dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
-		String mentionWiki = "The story of [[Dracula]] [[Bram Stoker]] has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title ''Dracula, or The Undead'' shortly before the novel's publication and performed only once. Popular films include ''[[Dracula (1931 English-language film)|Dracula]]'' (1931), ''[[Dracula (1958 film)|Dracula]]'' (alternative title: ''The Horror of Dracula'') (1958), and ''[[Dracula (1992 film)|Dracula]]'' (also known as ''Bram Stoker's Dracula'') (1992). ''Dracula'' was also adapted as ''[[Nosferatu]]'' (1922), a film directed by the German director [[F. W. Murnau]], without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"[[Count Orlok]]\". AC Milan [[Bill Clinton]]. Clinton was born in Italy.";
-		//String mentionWiki ="Popular films include Dracula (1931 English-language film) (1931) , Dracula (1958 film) (alternative title : The Horror of Dracula) (1958) , and Dracula (1992 film) (also known as Bram Stoker 's Dracula) (1992) .";
+	public static List<String> getPhrasesWithMid (String text, String title){
 		System.out.println("Mention riconosciute dal testo 'sporco':");
 		ExtractorFirstMentions extractor = new ExtractorFirstMentions();
-		WikiArticle wikiArticle = extractor.extractMentions(mentionWiki,title);
+		WikiArticle wikiArticle = extractor.extractMentions(text,title);
 		//Set<String> setWikid = wikiArticle.getMentions();
 		//setWikid.add(title);
-		mentionWiki= wikiArticle.getText();
+		text= wikiArticle.getText();
 		System.out.println("Pulizia testo...");
 		//pulizia testo
 		WikiModel wikiModel = new WikiModel("http://www.mywiki.com/wiki/${image}", "http://www.mywiki.com/wiki/${title}");
-		mentionWiki = wikiModel.render(new PlainTextConverter(), mentionWiki);
-		wikiArticle.setText(mentionWiki);
-		System.out.println("Testo 'pulito: "+mentionWiki);
+		text = wikiModel.render(new PlainTextConverter(), text);
+		wikiArticle.setText(text);
+		System.out.println("Testo 'pulito: "+text);
 		System.out.println("Riconoscimento entità attraverso il NER");
 		EntityDetect ed = new EntityDetect();
 		SentenceDetect sd = new SentenceDetect();
 		//Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(mentionWiki));
-		List<String> phrases = sd.getSentences(mentionWiki);
+		List<String> phrases = sd.getSentences(text);
 		Map<String,String> namedEntities = ed.getEntitiesFromPhrases(phrases);
 
 		//estrazione entità riconosciute come PERSON
@@ -343,9 +335,22 @@ public  class ExtractorFirstMentions {
 			}
 			System.out.println(phrase);
 		}
+		return phrases;
+
+
+
+	}
+
+	public static void main(String[] args) {
 
 
 
 
+		String title = "Dracula";
+		//String mentionWiki = "This is  [[Hello world | Hello world]] hgjkgy [[ciao mondo | Hello world]]dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
+		String mentionWiki = "The story of [[Dracula]] [[Bram Stoker]] has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title ''Dracula, or The Undead'' shortly before the novel's publication and performed only once. Popular films include ''[[Dracula (1931 English-language film)|Dracula]]'' (1931), ''[[Dracula (1958 film)|Dracula]]'' (alternative title: ''The Horror of Dracula'') (1958), and ''[[Dracula (1992 film)|Dracula]]'' (also known as ''Bram Stoker's Dracula'') (1992). ''Dracula'' was also adapted as ''[[Nosferatu]]'' (1922), a film directed by the German director [[F. W. Murnau]], without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"[[Count Orlok]]\". AC Milan [[Bill Clinton]]. Clinton was born in Italy.";
+		//String mentionWiki ="Popular films include Dracula (1931 English-language film) (1931) , Dracula (1958 film) (alternative title : The Horror of Dracula) (1958) , and Dracula (1992 film) (also known as Bram Stoker 's Dracula) (1992) .";
+		List<String> phrases = getPhrasesWithMid(mentionWiki,title);
+		
 	}
 }
