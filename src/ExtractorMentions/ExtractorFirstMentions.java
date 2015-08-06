@@ -15,6 +15,7 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.stanford.nlp.util.Pair;
 import persistence.dao.EntryMappedDAO;
 import persistence.dao.EntryMappedDAOImpl;
 import persistence.dao.EntryRedirectDAO;
@@ -175,7 +176,10 @@ public  class ExtractorFirstMentions {
 	}
 
 	public static void main(String[] args) {
-		//
+
+
+
+
 		String title = "Dracula";
 		//String mentionWiki = "This is  [[Hello world | Hello world]] hgjkgy [[ciao mondo | Hello world]]dskdasldlsa [[pippo]]hgsajhkgc[[A#sfhfdhws|dfhask of A]] AC Milan";
 		String mentionWiki = "The story of [[Dracula]] [[Bram Stoker]] has been the basis for numerous films and plays. Stoker himself wrote the first theatrical adaptation, which was presented at the Lyceum Theatre under the title ''Dracula, or The Undead'' shortly before the novel's publication and performed only once. Popular films include ''[[Dracula (1931 English-language film)|Dracula]]'' (1931), ''[[Dracula (1958 film)|Dracula]]'' (alternative title: ''The Horror of Dracula'') (1958), and ''[[Dracula (1992 film)|Dracula]]'' (also known as ''Bram Stoker's Dracula'') (1992). ''Dracula'' was also adapted as ''[[Nosferatu]]'' (1922), a film directed by the German director [[F. W. Murnau]], without permission from Stoker's widow; the filmmakers attempted to avoid copyright problems by altering many of the details, including changing the name of the villain to \"[[Count Orlok]]\". AC Milan [[Bill Clinton]]. Clinton was born in Italy.";
@@ -232,13 +236,23 @@ public  class ExtractorFirstMentions {
 
 
 		//Set<String> namedEntities = ed.getEntitiesFromPhrases(sd.getSentences(paragraph));
-
-		TreeMap<String, String> treemap = new TreeMap<String, String>();
+		//Pair<String, String> pair = new Pair<String,String>();
+		TreeMap<String, Pair<String,String>> treemap = new TreeMap<String, Pair<String,String>>();
 
 		//visualizzazione Set mention iniziali 
 		for(String key: wikidKeys){
 			//System.out.println(key+"->"+wikidToText.get(key));
-			treemap.put(key, key.replaceAll(" ", "_"));
+			String wikid = key.replaceAll(" ", "_");
+			Pair<String, String> pair = new Pair<String,String>();
+			pair.setFirst(wikid);
+			EntryMappedDAO dao = new EntryMappedDAOImpl();
+			EntryMappedBean mappingBean = dao.getMidFromWikID(wikid);
+			String mid="";
+			if (mappingBean!=null){
+				mid= mappingBean.getMid();
+			}
+			pair.setSecond(mid);
+			treemap.put(key, pair );
 			System.out.println(key);
 		}
 		//visualizzazione Map PERSON 
@@ -246,56 +260,92 @@ public  class ExtractorFirstMentions {
 		Iterator<String> keyPersonIterator = mapPersons.keySet().iterator();
 		while(keyPersonIterator.hasNext()){
 			String currentEntity = keyPersonIterator.next();
-			treemap.put(currentEntity, mapPersons.get(currentEntity).replaceAll(" ", "_"));
-			System.out.println("person:"+currentEntity+" id "+mapPersons.get(currentEntity));
+
+			String wikidPerson = mapPersons.get(currentEntity).replaceAll(" ", "_");
+			Pair<String, String> pair = new Pair<String,String>();
+			pair.setFirst(wikidPerson);
+			EntryMappedDAO dao = new EntryMappedDAOImpl();
+			EntryMappedBean mappingBean = dao.getMidFromWikID(wikidPerson);
+			String mid="";
+			if (mappingBean!=null){
+				mid= mappingBean.getMid();
+			}
+			pair.setSecond(mid);
+			treemap.put(currentEntity, pair);
+			System.out.println("person:"+currentEntity+" id "+wikidPerson);
 		}
 		//visualizzazione Map redirect 
 		Map<String,String> mapRedirect = wikiArticle.getRedirectWikid();
 		Iterator<String> keyRedirectIterator = mapRedirect.keySet().iterator();
 		while(keyRedirectIterator.hasNext()){
 			String currentEntity = keyRedirectIterator.next();
-			treemap.put(currentEntity, mapRedirect.get(currentEntity).replaceAll(" ", "_"));
-			System.out.println("redirect:"+currentEntity+" id "+mapRedirect.get(currentEntity));
+			String wikid = mapRedirect.get(currentEntity).replaceAll(" ", "_");
+			Pair<String, String> pair = new Pair<String,String>();
+			pair.setFirst(wikid);
+			EntryMappedDAO dao = new EntryMappedDAOImpl();
+			EntryMappedBean mappingBean = dao.getMidFromWikID(wikid);
+			String mid="";
+			if (mappingBean!=null){
+				mid= mappingBean.getMid();
+			}
+			pair.setSecond(mid);
+			treemap.put(currentEntity,pair);
+			System.out.println("redirect:"+currentEntity+" id "+wikid);
 		}
 
 		Map sortedMap = sortByValues(treemap);
 
 		// Get a set of the entries on the sorted map
 		Set set = sortedMap.entrySet();
+		// Get an iterator
+		Iterator i = set.iterator();
 
+		// Display elements
+		while(i.hasNext()) {
+			Map.Entry me = (Map.Entry)i.next();
+			System.out.print(me.getKey() + "---> ");
+
+			System.out.println(me.getValue().toString());
+		}
+
+		/*
 		// Get an iterator
 		Iterator i2 = set.iterator();
-
+		Map<String,String> wikidMid = new HashMap<String,String>();
 		// Display elements
 		while(i2.hasNext()) {
 			Map.Entry me = (Map.Entry)i2.next();
-			System.out.print(me.getKey() + ": ");
-			System.out.println(me.getValue());
-		}
-
-
-		for (String phrase:phrases){
-			Iterator i = set.iterator();
-			phrase = phrase.replaceAll("-LRB- ", "(");
-			phrase = phrase.replaceAll(" -RRB-", ")");
-			
-			System.out.println(phrase);
-			// Display elements
-			while(i.hasNext()) {
-				Map.Entry me = (Map.Entry)i.next();
-				//phrase = phrase.replaceAll(me.getKey().toString(), "[["+me.getValue()+"]]");
-				EntryMappedDAO dao = new EntryMappedDAOImpl();
-				EntryMappedBean mappingBean = dao.getMidFromWikID(me.getValue().toString());
-				if (mappingBean!=null){
-					System.out.println(me.getKey().toString());
-					phrase = phrase.replaceAll(me.getKey().toString(), "[["+mappingBean.getMid()+"]]");
-				}
-				//System.out.print(me.getKey() + ": ");
-				//System.out.println(me.getValue());
+			EntryMappedDAO dao = new EntryMappedDAOImpl();
+			EntryMappedBean mappingBean = dao.getMidFromWikID(me.getValue().toString());
+			if (mappingBean!=null){
+				String mid = mappingBean.getMid();
+				wikidMid.put(me.getValue().toString(), mid);
+				System.out.println("wikid: "+me.getValue()+" mid: "+mid);
 			}
 
+		}
+		 */
+		for (String phrase:phrases){
+			Iterator i2 = set.iterator();
+
+			//phrase = phrase.replaceAll("-LRB- ", "(");
+			//phrase = phrase.replaceAll(" -RRB-", ")");
+
+			System.out.println(phrase);
+			// Display elements
+			while((i2.hasNext())) {
+				Map.Entry me = (Map.Entry)i2.next();
+				String key = me.getKey().toString().replaceAll("\\(","-LRB- ");
+				key = key.replaceAll( "\\)"," -RRB-");
+				//String key = "Dracula -LRB- 1931 English-language film -RRB-";
+				String mid = ((Pair<String,String>) me.getValue()).second();
+				phrase = phrase.replaceAll(key, "[["+mid+"]]");
+			}
 			System.out.println(phrase);
 		}
+
+
+
 
 	}
 }
