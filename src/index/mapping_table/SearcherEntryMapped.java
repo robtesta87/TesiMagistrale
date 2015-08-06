@@ -181,7 +181,7 @@ public class SearcherEntryMapped {
 
 		try {
 			Query query = parser.parse(wikid);
-			System.out.println("Searching...");
+			//System.out.println("Searching...");
 
 			TopDocs results = searcher.search(query, 5 * maxHits);
 			ScoreDoc[] hits = results.scoreDocs;

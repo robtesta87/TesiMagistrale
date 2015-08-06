@@ -28,7 +28,7 @@ public class EntryMappedDAOImpl implements EntryMappedDAO {
 		try {
 			List<EntryMappedBean>listOfresults = searcher.searchRecordFor(wikid);
 			for(EntryMappedBean mb: listOfresults){
-				System.out.println(mb.toString());
+				//System.out.println(mb.toString());
 			}
 			if(listOfresults.size()>0)
 				mappingResult = listOfresults.get(0);
@@ -41,7 +41,7 @@ public class EntryMappedDAOImpl implements EntryMappedDAO {
 
 
 	public static void main(String[] args) {
-		String wikid = "Silvio_Berlusconi";
+		String wikid = "Dracula_(1931_English-language_film)";
 //		String wikid = "dlskfaòld";
 		EntryMappedDAO dao = new EntryMappedDAOImpl();
 
