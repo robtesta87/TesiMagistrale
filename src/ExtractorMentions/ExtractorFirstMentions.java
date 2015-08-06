@@ -226,7 +226,20 @@ public  class ExtractorFirstMentions {
 			String currentEntity = keyRedirectIterator.next();
 			System.out.println("redirect:"+currentEntity+" id "+mapRedirect.get(currentEntity));
 		}
-
+		
+		for (String phrase:phrases){
+			for(String key: wikidKeys){
+				phrase= phrase.replaceAll(key, "[["+key+"]]");
+			}
+			keyPersonIterator = mapPersons.keySet().iterator();
+			while(keyPersonIterator.hasNext()){
+				String currentEntity = keyPersonIterator.next();
+				phrase = phrase.replaceAll(currentEntity, "[["+mapPersons.get(currentEntity)+"]]");
+				//System.out.println("person:"+currentEntity+" id "+mapPersons.get(currentEntity));
+			}
+			
+			System.out.println(phrase);
+		}
 
 	}
 }
