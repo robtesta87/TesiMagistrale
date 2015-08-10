@@ -28,6 +28,10 @@ public class EntityDetect {
 				List<Triple<String,Integer,Integer>> triples = classifier.classifyToCharacterOffsets(currentPhrase);
 				for (Triple<String,Integer,Integer> trip : triples) {
 					annotationsNE.put(currentPhrase.substring(trip.second(), trip.third()),trip.first);
+					if (trip.first.equals("PERSON")){
+						String[] personSplitted = currentPhrase.substring(trip.second(), trip.third()).split(" ");
+						annotationsNE.put(personSplitted[personSplitted.length-1],trip.first);
+					}
 					//System.out.println("key: "+currentPhrase.substring(trip.second(), trip.third())+" value: "+trip.first);
 				}
 			}
